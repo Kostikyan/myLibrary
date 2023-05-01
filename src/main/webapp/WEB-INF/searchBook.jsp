@@ -1,6 +1,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.model.Book" %>
 <%@ page import="com.manager.BookManager" %>
+<%@ page import="com.model.User" %>
+<%@ page import="com.model.UserType" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
@@ -25,8 +27,9 @@
   <!--===============================================================================================-->
 </head>
 <%
-
   List<Book> books = (List<Book>) request.getAttribute("bookList");
+  int userId = (int) session.getAttribute("userId");
+  User user = (User) session.getAttribute("user");
 %>
 <body>
 <div class="limiter">
@@ -46,6 +49,21 @@
       </tr>
       </thead>
       <tbody>
+      <% if(user.getUserType() == UserType.USER){%>
+      <% if (books != null && !books.isEmpty()){%>
+      <% for (Book book : books) { %>
+      <% if (book.getUser().getId() == userId){%>
+      <tr>
+        <th scope="row"><%=book.getId()%></th>
+        <td><%=book.getTitle()%></td>
+        <td><%=book.getDescription()%></td>
+        <td><%=book.getPrice()%></td>
+        <td><%=book.getAuthor().getName()%></td>
+        <td><a href="deleteBook?id=<%=book.getId()%>">Delete</a> / <a href="editBook?id=<%=book.getId()%>">Edit</a></td>
+      </tr>
+      <%}}}}
+      else{ %>
+      <% if (books != null && !books.isEmpty()){%>
       <% for (Book book : books) { %>
       <tr>
         <th scope="row"><%=book.getId()%></th>
@@ -55,7 +73,7 @@
         <td><%=book.getAuthor().getName()%></td>
         <td><a href="deleteBook?id=<%=book.getId()%>">Delete</a> / <a href="editBook?id=<%=book.getId()%>">Edit</a></td>
       </tr>
-      <%}%>
+      <%}}}%>
       </tbody>
     </table>
   </div>

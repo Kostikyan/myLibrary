@@ -2,6 +2,7 @@ package com.manager;
 
 import com.db.DBConnectionProvider;
 import com.model.User;
+import com.model.UserType;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,17 +12,18 @@ public class UserManager {
     private Connection connection = DBConnectionProvider.getInstance().getConnection();
 
     public void save(User user) {
-        String sql = "INSERT INTO `myLibrary`.`user`(`name`, `surname`, `email`, `password`) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO `myLibrary`.`user`(`name`, `surname`, `email`, `password`, `user_type`) VALUES(?,?,?,?,?)";
 
         try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, user.getName());
             ps.setString(2, user.getSurname());
             ps.setString(3, user.getEmail());
             ps.setString(4, user.getPassword());
+            ps.setString(5, user.getUserType().name());
 
             ps.executeUpdate();
             ResultSet generatedKeys = ps.getGeneratedKeys();
-            if(generatedKeys.next()) {
+            if (generatedKeys.next()) {
                 user.setId(generatedKeys.getInt(1));
             }
             System.out.println("user inserted into db");
@@ -31,8 +33,9 @@ public class UserManager {
     }
 
     public User getById(int id) {
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("Select * from `myLibrary`.`user` where `id` = " + id);
+        String sql = "Select * from `myLibrary`.`user` where `id` = " + id;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return getUserFromResultSet(resultSet);
             }
@@ -98,8 +101,8 @@ public class UserManager {
     }
 
     public void update(User user) {
-        String sql = "UPDATE `myLibrary`.`user` SET `name` = '%s', `username` = '%s', `email` = '%s', `password` = '%s'  WHERE `id` = %d";
-        try(PreparedStatement statement = connection.prepareStatement(String.format(sql, user.getName(), user.getSurname(), user.getEmail(), user.getPassword()))){
+        String sql = "UPDATE `myLibrary`.`user` SET `name` = '%s', `username` = '%s', `email` = '%s', `password` = '%s', `user_type`  WHERE `id` = %d";
+        try (PreparedStatement statement = connection.prepareStatement(String.format(sql, user.getName(), user.getSurname(), user.getEmail(), user.getPassword(), user.getUserType().name(), user.getId()))) {
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -113,7 +116,8 @@ public class UserManager {
             surname(resultSet.getString("surname")).
             email(resultSet.getString("email")).
             password(resultSet.getString("password")).
-        build();
+            userType(UserType.valueOf(resultSet.getString("user_type")))
+            .build();
 
         return user;
     }

@@ -20,6 +20,7 @@ public class SearchBookServlet extends HttpServlet {
         String searchText = req.getParameter("searchText");
         List<Book> searched = bookManager.search(searchText);
         req.setAttribute("bookList", searched);
+        req.setAttribute("userId", req.getSession().getAttribute("userId"));
         req.getRequestDispatcher("WEB-INF/searchBook.jsp").forward(req, resp);
     }
 

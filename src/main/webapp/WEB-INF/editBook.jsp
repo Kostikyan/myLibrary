@@ -40,10 +40,10 @@
             <span class="login100-form-title">
                 Edit Book
             </span>
-            <form class="login100-form validate-form" action="editBook" method="post">
+            <form class="login100-form validate-form" action="editBook" method="post" enctype="multipart/form-data">
 
                 <input name="id" type="hidden" value="<%=book.getId()%>">
-                <div class="wrap-input100 validate-input" data-validate="">
+                <div class="wrap-input100 validate-input" data-validate="Not null">
                     <input class="input100" type="text" name="title" value="<%=book.getTitle()%>">
                     <span class="focus-input100"></span>
                     <span class="symbol-input100">
@@ -51,7 +51,7 @@
 						</span>
                 </div>
 
-                <div class="wrap-input100 validate-input" data-validate="">
+                <div class="wrap-input100 validate-input" data-validate="Not null">
                     <input class="input100" type="text" name="description" value="<%=book.getDescription()%>">
                     <span class="focus-input100"></span>
                     <span class="symbol-input100">
@@ -61,6 +61,14 @@
 
                 <div class="wrap-input100 validate-input" data-validate="Only int!">
                     <input class="input100" type="number" name="price" value="<%=book.getPrice()%>">
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+
+						</span>
+                </div>
+
+                <div class="wrap-input100 validate-input">
+                    <input class="input100" type="file" name="picture" value="<%=book.getPicName()%>">
                     <span class="focus-input100"></span>
                     <span class="symbol-input100">
 

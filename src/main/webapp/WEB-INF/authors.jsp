@@ -1,5 +1,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.model.Author" %>
+<%@ page import="com.model.User" %>
+<%@ page import="com.model.UserType" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
@@ -23,7 +25,10 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <!--===============================================================================================-->
 </head>
-<% List<Author> authors = (List<Author>) request.getAttribute("authors");%>
+<%
+    List<Author> authors = (List<Author>) request.getAttribute("authors");
+    User user = (User) session.getAttribute("user");
+%>
 <body>
 <div class="limiter">
 
@@ -39,7 +44,9 @@
                     <th scope="col">Surname</th>
                     <th scope="col">Email</th>
                     <th scope="col">Age</th>
+                    <%if(user.getUserType() == UserType.ADMIN){%>
                     <th scope="col">Action</th>
+                    <%}%>
                 </tr>
                 </thead>
                 <tbody>
@@ -51,7 +58,9 @@
                     <td><%=author.getSurname()%></td>
                     <td><%=author.getEmail()%></td>
                     <td><%=author.getAge()%></td>
+                    <%if(user.getUserType() == UserType.ADMIN){%>
                     <td><a href="deleteAuthor?id=<%=author.getId()%>">Delete</a> / <a href="editAuthor?id=<%=author.getId()%>">Edit</a></td>
+                    <%}%>
                 </tr>
                 <%}}%>
                 </tbody>

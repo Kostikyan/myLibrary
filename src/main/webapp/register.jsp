@@ -73,6 +73,17 @@
 						</span>
                 </div>
 
+                <div class="wrap-input100 validate-input" data-validate = "Choose one">
+                    <select class="input100" name="userType">
+                        <option value="USER">User</option>
+                        <option value="ADMIN">Admin</option>
+                    </select>
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+                </div>
+
                 <div class="container-login100-form-btn">
                     <input class="login100-form-btn" type="submit" value="Register">
                 </div>

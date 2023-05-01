@@ -1,7 +1,9 @@
 package com.servlet;
 
 import com.manager.BookManager;
+import com.manager.UserManager;
 import com.model.Book;
+import com.model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +17,7 @@ import java.util.List;
 public class BooksServlet extends HttpServlet {
 
     private BookManager bookManager = new BookManager();
+    private UserManager userManager = new UserManager();
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Book> all = bookManager.getAll();

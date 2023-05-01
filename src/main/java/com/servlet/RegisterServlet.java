@@ -2,6 +2,7 @@ package com.servlet;
 
 import com.manager.UserManager;
 import com.model.User;
+import com.model.UserType;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,15 +20,16 @@ public class RegisterServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
         User user = userManager.getByEmail(email);
+        UserType userType = UserType.valueOf(req.getParameter("userType"));
         if(user == null){
             userManager.save(User.builder()
                     .name(req.getParameter("name"))
                     .surname(req.getParameter("surname"))
                     .email(email)
                     .password(req.getParameter("password"))
+                    .userType(userType)
                     .build());
         }
-
         resp.sendRedirect("/");
     }
 }

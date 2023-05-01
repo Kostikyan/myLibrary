@@ -1,3 +1,5 @@
+<%@ page import="com.model.User" %>
+<%@ page import="com.model.UserType" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,11 +48,13 @@
                 </span>
             </a>
             <a href="addAuthor">
+                <%if(((User) session.getAttribute("user")).getUserType() == UserType.ADMIN){%>
                 <span class="login100-form-title" style="
                     font-size: 50px;
                 ">
                     ADD AUTHOR
                 </span>
+                <%}%>
             </a>
             <a href="books">
                 <span class="login100-form-title" style="

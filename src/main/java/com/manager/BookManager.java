@@ -10,14 +10,17 @@ import java.util.List;
 public class BookManager {
     private Connection connection = DBConnectionProvider.getInstance().getConnection();
     private AuthorManager authorManager = new AuthorManager();
+    private UserManager userManager = new UserManager();
     public void save(Book book) {
-        String sql = "INSERT INTO `myLibrary`.`book`(`title`, `description`, `price`, `author_id`) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO `myLibrary`.`book`(`title`, `description`, `price`, `author_id`, `user_id`, `pic_name`) VALUES(?,?,?,?,?,?)";
 
         try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, book.getTitle());
             ps.setString(2, book.getDescription());
             ps.setInt(3, book.getPrice());
             ps.setInt(4, book.getAuthor().getId());
+            ps.setInt(5, book.getUser().getId());
+            ps.setString(6, book.getPicName());
 
             ps.executeUpdate();
             ResultSet generatedKeys = ps.getGeneratedKeys();
@@ -66,8 +69,8 @@ public class BookManager {
     }
 
     public void update(Book book) {
-        String sql = "UPDATE `myLibrary`.`book` SET `title` = '%s', `description` = '%s', `price` = %d, `author_id` = %d  WHERE `id` = %d";
-        try(PreparedStatement statement = connection.prepareStatement(String.format(sql, book.getTitle(), book.getDescription(), book.getPrice(), book.getAuthor().getId(), book.getId()))){
+        String sql = "UPDATE `myLibrary`.`book` SET `title` = '%s', `description` = '%s', `price` = %d, `author_id` = %d, `pic_name` = '%s'  WHERE `id` = %d";
+        try(PreparedStatement statement = connection.prepareStatement(String.format(sql, book.getTitle(), book.getDescription(), book.getPrice(), book.getAuthor().getId(), book.getPicName(), book.getId()))){
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -81,6 +84,8 @@ public class BookManager {
                 description(resultSet.getString("description")).
                 price(resultSet.getInt("price")).
                 author(authorManager.getById(resultSet.getInt("author_id"))).
+                user(userManager.getById(resultSet.getInt("user_id"))).
+                picName(resultSet.getString("pic_name")).
                 build();
 
         return book;

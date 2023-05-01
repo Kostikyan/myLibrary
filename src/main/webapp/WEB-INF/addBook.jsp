@@ -38,7 +38,7 @@
             <span class="login100-form-title">
                 Add Book
             </span>
-      <form class="login100-form validate-form" action="addBook" method="post">
+      <form class="login100-form validate-form" action="addBook" method="post" enctype="multipart/form-data">
 
         <div class="wrap-input100 validate-input" data-validate="">
           <input class="input100" type="text" name="title" placeholder="Title">
@@ -71,6 +71,14 @@
             </option>
             <%}%>
           </select>
+          <span class="focus-input100"></span>
+          <span class="symbol-input100">
+
+						</span>
+        </div>
+
+        <div class="wrap-input100">
+          <input class="input100" type="file" name="picture" placeholder="Picture">
           <span class="focus-input100"></span>
           <span class="symbol-input100">
 
