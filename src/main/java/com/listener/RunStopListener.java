@@ -1,12 +1,11 @@
 package com.listener;
 
 import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import java.util.Date;
 
 @WebListener
-public class MyApplicationListener implements javax.servlet.ServletContextListener {
+public class RunStopListener implements javax.servlet.ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         System.out.println("Server started at " + new Date());
